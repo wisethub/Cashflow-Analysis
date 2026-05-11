@@ -1,0 +1,1007 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Payment & Cashflow Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Inter,system-ui,sans-serif;
+  background:#0d1117;
+  color:#e6edf3;
+  min-height:100vh;
+  padding:20px;
+}
+
+.ctrl-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:12px 16px;
+  margin-bottom:18px;
+  background:#161b22;
+  border:1px solid #30363d;
+  border-radius:12px;
+  position:sticky;
+  top:10px;
+  z-index:999;
+}
+
+.load-btn{
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:700;
+  background:#238636;
+  color:#fff;
+  transition:all .2s;
+}
+
+.load-btn:hover{
+  opacity:.9;
+}
+
+.load-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.prog-wrap{
+  flex:1;
+  min-width:120px;
+  height:6px;
+  background:#30363d;
+  border-radius:4px;
+  overflow:hidden;
+}
+
+.prog-bar{
+  height:100%;
+  width:0%;
+  background:#58a6ff;
+  border-radius:4px;
+  transition:width .25s;
+}
+
+.status-txt{
+  font-size:12px;
+  color:#8b949e;
+  white-space:nowrap;
+}
+
+.err-box{
+  color:#f85149;
+  background:#161b22;
+  border:1px solid #30363d;
+  border-radius:10px;
+  padding:14px 18px;
+  font-size:13px;
+  margin-bottom:16px;
+}
+
+.grid{
+  display:grid;
+  gap:18px;
+}
+
+.kpi-grid{
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  margin-bottom:20px;
+}
+
+.card{
+  background:#161b22;
+  border:1px solid #30363d;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 4px 18px rgba(0,0,0,.25);
+}
+
+.card-title{
+  font-size:13px;
+  color:#8b949e;
+  margin-bottom:12px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.kpi-value{
+  font-size:30px;
+  font-weight:800;
+  line-height:1.1;
+}
+
+.kpi-sub{
+  margin-top:8px;
+  color:#8b949e;
+  font-size:12px;
+}
+
+.positive{
+  color:#3fb950;
+}
+
+.negative{
+  color:#f85149;
+}
+
+.warning{
+  color:#d29922;
+}
+
+.chart-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:20px;
+  margin-bottom:20px;
+}
+
+.chart-wrap{
+  height:340px;
+  position:relative;
+}
+
+.table-wrap{
+  overflow:auto;
+  border-radius:10px;
+  border:1px solid #30363d;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th{
+  background:#21262d;
+  color:#e6edf3;
+  text-align:left;
+  padding:12px;
+  font-size:12px;
+  position:sticky;
+  top:0;
+  z-index:1;
+}
+
+td{
+  padding:12px;
+  border-top:1px solid #30363d;
+  font-size:13px;
+  color:#c9d1d9;
+}
+
+tr:hover td{
+  background:#1c2128;
+}
+
+.alert-box{
+  padding:12px 14px;
+  border-radius:10px;
+  margin-bottom:12px;
+  font-size:13px;
+  border-left:5px solid;
+}
+
+.alert-danger{
+  background:rgba(248,81,73,.12);
+  border-color:#f85149;
+}
+
+.alert-warning{
+  background:rgba(210,153,34,.12);
+  border-color:#d29922;
+}
+
+.alert-success{
+  background:rgba(63,185,80,.12);
+  border-color:#3fb950;
+}
+
+.section-title{
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:16px;
+}
+
+.flex{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.flex-1{
+  flex:1;
+  min-width:320px;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  background:#21262d;
+  color:#58a6ff;
+}
+
+.empty-state{
+  padding:50px 20px;
+  text-align:center;
+  color:#8b949e;
+  background:#161b22;
+  border-radius:12px;
+  border:1px dashed #30363d;
+}
+
+.small{
+  font-size:12px;
+  color:#8b949e;
+}
+
+@media(max-width:768px){
+  .kpi-value{
+    font-size:24px;
+  }
+
+  .chart-wrap{
+    height:280px;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="ctrl-bar">
+  <button class="load-btn" id="load-btn" onclick="loadAllRecords()">⬇ Load All Records</button>
+  <div class="prog-wrap">
+    <div class="prog-bar" id="prog-bar"></div>
+  </div>
+  <span class="status-txt" id="status-txt">Press Load to fetch data from Manager</span>
+</div>
+
+<div id="app"></div>
+
+<script>
+/* ══════════════════════════════════
+   postMessage helper — DO NOT MODIFY
+══════════════════════════════════ */
+function postMessageWithResponse(message) {
+  return new Promise((resolve, reject) => {
+    const requestId = crypto.randomUUID();
+    const timer = setTimeout(() => {
+      window.removeEventListener('message', handler);
+      reject(new Error('Timeout — is this running inside Manager.io?'));
+    }, 15000);
+    function handler(event) {
+      if (event.data?.type?.endsWith('-response') && event.data?.requestId === requestId) {
+        clearTimeout(timer);
+        window.removeEventListener('message', handler);
+        resolve(event.data.body);
+      }
+    }
+    window.addEventListener('message', handler);
+    window.parent.postMessage({ ...message, requestId }, '*');
+  });
+}
+
+/* ══════════════════════════════════
+   getGeneralLedgerTransactionsBatch
+   Fetches ALL pages — DO NOT SIMPLIFY.
+══════════════════════════════════ */
+async function getGeneralLedgerTransactionsBatch(onProgress) {
+  const allItems = [];
+  let nextToken  = null;
+  let pageNum    = 0;
+  let apiTotal   = null;
+
+  do {
+    const path = nextToken
+      ? '/api4/general-ledger-transactions-batch?PageSize=99999&next_page_token=' + encodeURIComponent(nextToken)
+      : '/api4/general-ledger-transactions-batch?PageSize=99999';
+
+    const data = await postMessageWithResponse({ type: 'api-request', method: 'GET', path });
+
+    const page = Array.isArray(data) ? data : (data.items || data.data || []);
+    allItems.push(...page);
+
+    nextToken = data.next_page_token || data.nextPageToken || data._links?.next?.href || null;
+
+    if (apiTotal === null) {
+      apiTotal = data.totalCount ?? data.total ?? data.count ?? data._metadata?.totalCount ?? null;
+    }
+
+    pageNum++;
+    if (onProgress) onProgress(allItems.length, apiTotal, pageNum);
+    if (pageNum >= 1000) break;
+
+  } while (nextToken);
+
+  return allItems;
+}
+
+/* ══════════════════════════════════
+   Generic paginated fetch helper
+══════════════════════════════════ */
+async function fetchAllPages(endpoint) {
+  const allItems = [];
+  let nextToken = null;
+  let guard = 0;
+
+  do{
+    const path = nextToken
+      ? endpoint + '?PageSize=99999&next_page_token=' + encodeURIComponent(nextToken)
+      : endpoint + '?PageSize=99999';
+
+    const data = await postMessageWithResponse({
+      type:'api-request',
+      method:'GET',
+      path
+    });
+
+    const page = Array.isArray(data) ? data : (data.items || data.data || []);
+    allItems.push(...page);
+
+    nextToken = data.next_page_token || data.nextPageToken || data._links?.next?.href || null;
+
+    guard++;
+    if(guard > 1000) break;
+
+  }while(nextToken);
+
+  return allItems;
+}
+
+/* ══════════════════════════════════
+   Main load function
+══════════════════════════════════ */
+async function loadAllRecords() {
+
+  const btn    = document.getElementById('load-btn');
+  const bar    = document.getElementById('prog-bar');
+  const status = document.getElementById('status-txt');
+  const app    = document.getElementById('app');
+
+  btn.disabled = true;
+  btn.textContent = 'Loading…';
+  bar.style.width = '0%';
+  app.innerHTML = '';
+
+  try {
+
+    status.textContent = 'Loading General Ledger...';
+
+    const glItems = await getGeneralLedgerTransactionsBatch((loaded,total,page)=>{
+      status.textContent = total
+        ? `GL Page ${page} · ${loaded.toLocaleString()} / ${total.toLocaleString()}`
+        : `GL Page ${page} · ${loaded.toLocaleString()} records`;
+    });
+
+    bar.style.width = '30%';
+
+    status.textContent = 'Loading Bank Accounts...';
+    const bankAccounts = await fetchAllPages('/api4/bank-or-cash-account-batch');
+
+    bar.style.width = '55%';
+
+    status.textContent = 'Loading Receipts...';
+    const receipts = await fetchAllPages('/api4/receipt-batch');
+
+    bar.style.width = '78%';
+
+    status.textContent = 'Loading Payments...';
+    const payments = await fetchAllPages('/api4/payment-batch');
+
+    bar.style.width = '100%';
+
+    status.textContent = `✓ Loaded ${glItems.length.toLocaleString()} GL · ${receipts.length.toLocaleString()} Receipts · ${payments.length.toLocaleString()} Payments`;
+
+    btn.textContent = '↺ Reload';
+    btn.disabled = false;
+
+    render({
+      glItems,
+      bankAccounts,
+      receipts,
+      payments
+    });
+
+  } catch(err){
+
+    status.textContent = '⚠ ' + err.message;
+    btn.textContent = '↺ Retry';
+    btn.disabled = false;
+
+    app.innerHTML = `
+      <div class="err-box">
+        <strong>Extension Error</strong><br><br>
+        ${err.message}<br><br>
+        <small>
+          Ensure this extension is opened inside Manager.io and API4 access is available.
+        </small>
+      </div>
+    `;
+  }
+}
+
+/* ══════════════════════════════════
+   Utility helpers
+══════════════════════════════════ */
+function fmt(v){
+  return '₦' + Number(v || 0).toLocaleString(undefined,{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
+
+function fmtDate(d){
+  if(!d) return '-';
+  return new Date(d).toLocaleDateString(undefined,{
+    year:'numeric',
+    month:'short',
+    day:'numeric'
+  });
+}
+
+function sumLines(lines){
+  return (lines || []).reduce((a,b)=>a + Number(b?.amount || 0),0);
+}
+
+/* ══════════════════════════════════
+   Dashboard render
+══════════════════════════════════ */
+function render(data){
+
+  const app = document.getElementById('app');
+
+  const glItems = data?.glItems || [];
+  const bankAccounts = data?.bankAccounts || [];
+  const receipts = data?.receipts || [];
+  const payments = data?.payments || [];
+
+  if(
+    !glItems.length &&
+    !receipts.length &&
+    !payments.length
+  ){
+    app.innerHTML = `
+      <div class="empty-state">
+        <h2>No Data Found</h2>
+        <br>
+        <p>No records were returned from Manager.io.</p>
+      </div>
+    `;
+    return;
+  }
+
+  /* ============================
+     CASH ANALYSIS
+  ============================ */
+
+  const totalReceipts = receipts.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+  const totalPayments = payments.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+
+  const netCash = totalReceipts - totalPayments;
+
+  const todayStr = new Date().toISOString().slice(0,10);
+
+  const dailyInflow = receipts
+    .filter(r => (r?.item?.date || '').slice(0,10) === todayStr)
+    .reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+
+  const dailyOutflow = payments
+    .filter(r => (r?.item?.date || '').slice(0,10) === todayStr)
+    .reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+
+  /* ============================
+     PAYMENT CATEGORIES
+  ============================ */
+
+  let customerPayments = 0;
+  let supplierPayments = 0;
+  let expensePayments = 0;
+  let loanPayments = 0;
+
+  payments.forEach(p=>{
+    const amt = sumLines(p?.item?.lines);
+
+    if(p?.item?.supplier){
+      supplierPayments += amt;
+    }else if(
+      (p?.item?.description || '').toLowerCase().includes('loan')
+    ){
+      loanPayments += amt;
+    }else{
+      expensePayments += amt;
+    }
+  });
+
+  receipts.forEach(r=>{
+    customerPayments += sumLines(r?.item?.lines);
+  });
+
+  /* ============================
+     BANK RECONCILIATION
+  ============================ */
+
+  const unreconciledReceipts = receipts.filter(r=>Number(r?.item?.cleared || 0) === 0);
+  const unreconciledPayments = payments.filter(p=>Number(p?.item?.cleared || 0) === 0);
+
+  const unreconciledTotal =
+    unreconciledReceipts.reduce((a,b)=>a + sumLines(b?.item?.lines),0) +
+    unreconciledPayments.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+
+  const outstandingCheques = unreconciledPayments.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+
+  /* ============================
+     ALERTS
+  ============================ */
+
+  const alerts = [];
+
+  if(netCash < 0){
+    alerts.push({
+      type:'danger',
+      text:'Negative cash position detected. Total outflows exceed inflows.'
+    });
+  }
+
+  if(unreconciledTotal > 0){
+    alerts.push({
+      type:'warning',
+      text:`There are ${unreconciledPayments.length + unreconciledReceipts.length} unreconciled bank transactions.`
+    });
+  }
+
+  const unusualThreshold = payments.length
+    ? totalPayments / payments.length * 3
+    : 0;
+
+  const unusualTransactions = payments.filter(p=>{
+    return sumLines(p?.item?.lines) > unusualThreshold && unusualThreshold > 0;
+  });
+
+  if(unusualTransactions.length){
+    alerts.push({
+      type:'warning',
+      text:`${unusualTransactions.length} unusual high-value payment transactions detected.`
+    });
+  }
+
+  if(!alerts.length){
+    alerts.push({
+      type:'success',
+      text:'No major financial alerts detected.'
+    });
+  }
+
+  /* ============================
+     CASHFLOW TREND
+  ============================ */
+
+  const cashflowMap = {};
+
+  receipts.forEach(r=>{
+    const d = (r?.item?.date || '').slice(0,10);
+    if(!cashflowMap[d]){
+      cashflowMap[d] = {in:0,out:0};
+    }
+    cashflowMap[d].in += sumLines(r?.item?.lines);
+  });
+
+  payments.forEach(p=>{
+    const d = (p?.item?.date || '').slice(0,10);
+    if(!cashflowMap[d]){
+      cashflowMap[d] = {in:0,out:0};
+    }
+    cashflowMap[d].out += sumLines(p?.item?.lines);
+  });
+
+  const trendLabels = Object.keys(cashflowMap).sort();
+
+  const inflowSeries = trendLabels.map(d=>cashflowMap[d].in);
+  const outflowSeries = trendLabels.map(d=>cashflowMap[d].out);
+
+  /* ============================
+     HTML
+  ============================ */
+
+  app.innerHTML = `
+
+    <div class="grid kpi-grid">
+
+      <div class="card">
+        <div class="card-title">Daily Cash Inflow</div>
+        <div class="kpi-value positive">${fmt(dailyInflow)}</div>
+        <div class="kpi-sub">Today's customer receipts</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Daily Cash Outflow</div>
+        <div class="kpi-value negative">${fmt(dailyOutflow)}</div>
+        <div class="kpi-sub">Today's payment transactions</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Net Cash Position</div>
+        <div class="kpi-value ${netCash >=0 ? 'positive':'negative'}">${fmt(netCash)}</div>
+        <div class="kpi-sub">Receipts minus payments</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Bank & Cash Accounts</div>
+        <div class="kpi-value">${bankAccounts.length.toLocaleString()}</div>
+        <div class="kpi-sub">Detected accounts</div>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-bottom:20px">
+      <div class="section-title">Financial Alerts</div>
+
+      ${
+        alerts.map(a=>`
+          <div class="alert-box alert-${a.type}">
+            ${a.text}
+          </div>
+        `).join('')
+      }
+    </div>
+
+    <div class="chart-grid">
+
+      <div class="card">
+        <div class="section-title">Cashflow Trend</div>
+        <div class="chart-wrap">
+          <canvas id="cashflowChart"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Payment Category Analysis</div>
+        <div class="chart-wrap">
+          <canvas id="paymentChart"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Expense Breakdown</div>
+        <div class="chart-wrap">
+          <canvas id="expenseChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flex">
+
+      <div class="card flex-1">
+        <div class="section-title">Bank Reconciliation Summary</div>
+
+        <div class="grid kpi-grid">
+
+          <div>
+            <div class="small">Unreconciled Transactions</div>
+            <div class="kpi-value warning">
+              ${(unreconciledReceipts.length + unreconciledPayments.length).toLocaleString()}
+            </div>
+          </div>
+
+          <div>
+            <div class="small">Outstanding Cheques</div>
+            <div class="kpi-value negative">
+              ${fmt(outstandingCheques)}
+            </div>
+          </div>
+
+          <div>
+            <div class="small">Unreconciled Amount</div>
+            <div class="kpi-value warning">
+              ${fmt(unreconciledTotal)}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card flex-1">
+        <div class="section-title">Payment Analysis</div>
+
+        <div style="display:grid;gap:12px">
+
+          <div>
+            <div class="badge">Customer Payments</div>
+            <div style="margin-top:8px;font-size:24px;font-weight:700" class="positive">
+              ${fmt(customerPayments)}
+            </div>
+          </div>
+
+          <div>
+            <div class="badge">Supplier Payments</div>
+            <div style="margin-top:8px;font-size:24px;font-weight:700" class="negative">
+              ${fmt(supplierPayments)}
+            </div>
+          </div>
+
+          <div>
+            <div class="badge">Loan Payments</div>
+            <div style="margin-top:8px;font-size:24px;font-weight:700">
+              ${fmt(loanPayments)}
+            </div>
+          </div>
+
+          <div>
+            <div class="badge">Expense Payments</div>
+            <div style="margin-top:8px;font-size:24px;font-weight:700">
+              ${fmt(expensePayments)}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="section-title">Recent Unreconciled Transactions</div>
+
+      <div class="table-wrap">
+        <table>
+
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Reference</th>
+              <th>Description</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            ${
+              [
+                ...unreconciledReceipts.map(r=>({
+                  type:'Receipt',
+                  date:r?.item?.date,
+                  reference:r?.item?.reference,
+                  description:r?.item?.description,
+                  amount:sumLines(r?.item?.lines)
+                })),
+                ...unreconciledPayments.map(r=>({
+                  type:'Payment',
+                  date:r?.item?.date,
+                  reference:r?.item?.reference,
+                  description:r?.item?.description,
+                  amount:sumLines(r?.item?.lines)
+                }))
+              ]
+              .sort((a,b)=>new Date(b.date)-new Date(a.date))
+              .slice(0,25)
+              .map(t=>`
+                <tr>
+                  <td>${fmtDate(t.date)}</td>
+                  <td>${t.type}</td>
+                  <td>${t.reference || '-'}</td>
+                  <td>${t.description || '-'}</td>
+                  <td>${fmt(t.amount)}</td>
+                </tr>
+              `).join('')
+            }
+
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="section-title">Bank & Cash Accounts</div>
+
+      <div class="table-wrap">
+        <table>
+
+          <thead>
+            <tr>
+              <th>Account Name</th>
+              <th>Type</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            ${
+              bankAccounts.map(a=>`
+                <tr>
+                  <td>${a?.item?.name || '-'}</td>
+                  <td>
+                    ${
+                      a?.item?.isBankAccount
+                        ? 'Bank Account'
+                        : a?.item?.isCashAccount
+                          ? 'Cash Account'
+                          : 'Other'
+                    }
+                  </td>
+                  <td>
+                    ${
+                      a?.item?.inactive
+                        ? '<span class="negative">Inactive</span>'
+                        : '<span class="positive">Active</span>'
+                    }
+                  </td>
+                </tr>
+              `).join('')
+            }
+
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  `;
+
+  /* ============================
+     CHARTS
+  ============================ */
+
+  const cashflowCtx = document.getElementById('cashflowChart');
+
+  if(cashflowCtx){
+    new Chart(cashflowCtx,{
+      type:'line',
+      data:{
+        labels:trendLabels,
+        datasets:[
+          {
+            label:'Cash Inflow',
+            data:inflowSeries,
+            borderColor:'#3fb950',
+            backgroundColor:'rgba(63,185,80,.15)',
+            tension:.35,
+            fill:true
+          },
+          {
+            label:'Cash Outflow',
+            data:outflowSeries,
+            borderColor:'#f85149',
+            backgroundColor:'rgba(248,81,73,.15)',
+            tension:.35,
+            fill:true
+          }
+        ]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+          legend:{
+            labels:{
+              color:'#e6edf3'
+            }
+          }
+        },
+        scales:{
+          x:{
+            ticks:{ color:'#8b949e' },
+            grid:{ color:'#30363d' }
+          },
+          y:{
+            ticks:{ color:'#8b949e' },
+            grid:{ color:'#30363d' }
+          }
+        }
+      }
+    });
+  }
+
+  const paymentCtx = document.getElementById('paymentChart');
+
+  if(paymentCtx){
+    new Chart(paymentCtx,{
+      type:'doughnut',
+      data:{
+        labels:[
+          'Supplier',
+          'Loan',
+          'Expense'
+        ],
+        datasets:[{
+          data:[
+            supplierPayments,
+            loanPayments,
+            expensePayments
+          ],
+          backgroundColor:[
+            '#58a6ff',
+            '#d29922',
+            '#f85149'
+          ]
+        }]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+          legend:{
+            labels:{
+              color:'#e6edf3'
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const expenseCtx = document.getElementById('expenseChart');
+
+  if(expenseCtx){
+    new Chart(expenseCtx,{
+      type:'bar',
+      data:{
+        labels:[
+          'Customer Receipts',
+          'Supplier Payments',
+          'Expense Payments',
+          'Loan Payments'
+        ],
+        datasets:[{
+          label:'Amount',
+          data:[
+            customerPayments,
+            supplierPayments,
+            expensePayments,
+            loanPayments
+          ],
+          backgroundColor:[
+            '#3fb950',
+            '#f85149',
+            '#d29922',
+            '#58a6ff'
+          ]
+        }]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+          legend:{
+            labels:{
+              color:'#e6edf3'
+            }
+          }
+        },
+        scales:{
+          x:{
+            ticks:{ color:'#8b949e' },
+            grid:{ color:'#30363d' }
+          },
+          y:{
+            ticks:{ color:'#8b949e' },
+            grid:{ color:'#30363d' }
+          }
+        }
+      }
+    });
+  }
+}
+</script>
+
+</body>
+</html>
