@@ -28,30 +28,29 @@ body{
   align-items:center;
   gap:10px;
   flex-wrap:wrap;
-  padding:12px 16px;
+  padding:14px 16px;
   margin-bottom:18px;
   background:#161b22;
   border:1px solid #30363d;
   border-radius:12px;
-  position:sticky;
-  top:10px;
-  z-index:999;
 }
 
-.load-btn{
-  padding:10px 20px;
+.load-btn,.run-btn{
+  padding:10px 18px;
   border:none;
   border-radius:8px;
   cursor:pointer;
   font-size:13px;
   font-weight:700;
-  background:#238636;
   color:#fff;
-  transition:all .2s;
 }
 
-.load-btn:hover{
-  opacity:.9;
+.load-btn{
+  background:#238636;
+}
+
+.run-btn{
+  background:#1f6feb;
 }
 
 .load-btn:disabled{
@@ -72,14 +71,12 @@ body{
   height:100%;
   width:0%;
   background:#58a6ff;
-  border-radius:4px;
   transition:width .25s;
 }
 
 .status-txt{
   font-size:12px;
   color:#8b949e;
-  white-space:nowrap;
 }
 
 .err-box{
@@ -87,9 +84,16 @@ body{
   background:#161b22;
   border:1px solid #30363d;
   border-radius:10px;
-  padding:14px 18px;
+  padding:14px;
+}
+
+input[type="date"],select{
+  background:#0d1117;
+  border:1px solid #30363d;
+  color:#e6edf3;
+  padding:9px 10px;
+  border-radius:8px;
   font-size:13px;
-  margin-bottom:16px;
 }
 
 .grid{
@@ -98,7 +102,7 @@ body{
 }
 
 .kpi-grid{
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   margin-bottom:20px;
 }
 
@@ -107,27 +111,18 @@ body{
   border:1px solid #30363d;
   border-radius:14px;
   padding:18px;
-  box-shadow:0 4px 18px rgba(0,0,0,.25);
 }
 
 .card-title{
   font-size:13px;
   color:#8b949e;
-  margin-bottom:12px;
+  margin-bottom:10px;
   text-transform:uppercase;
-  letter-spacing:.5px;
 }
 
 .kpi-value{
   font-size:30px;
   font-weight:800;
-  line-height:1.1;
-}
-
-.kpi-sub{
-  margin-top:8px;
-  color:#8b949e;
-  font-size:12px;
 }
 
 .positive{
@@ -150,64 +145,7 @@ body{
 }
 
 .chart-wrap{
-  height:340px;
-  position:relative;
-}
-
-.table-wrap{
-  overflow:auto;
-  border-radius:10px;
-  border:1px solid #30363d;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th{
-  background:#21262d;
-  color:#e6edf3;
-  text-align:left;
-  padding:12px;
-  font-size:12px;
-  position:sticky;
-  top:0;
-  z-index:1;
-}
-
-td{
-  padding:12px;
-  border-top:1px solid #30363d;
-  font-size:13px;
-  color:#c9d1d9;
-}
-
-tr:hover td{
-  background:#1c2128;
-}
-
-.alert-box{
-  padding:12px 14px;
-  border-radius:10px;
-  margin-bottom:12px;
-  font-size:13px;
-  border-left:5px solid;
-}
-
-.alert-danger{
-  background:rgba(248,81,73,.12);
-  border-color:#f85149;
-}
-
-.alert-warning{
-  background:rgba(210,153,34,.12);
-  border-color:#d29922;
-}
-
-.alert-success{
-  background:rgba(63,185,80,.12);
-  border-color:#3fb950;
+  height:320px;
 }
 
 .section-title{
@@ -218,7 +156,7 @@ tr:hover td{
 
 .flex{
   display:flex;
-  gap:18px;
+  gap:20px;
   flex-wrap:wrap;
 }
 
@@ -227,28 +165,103 @@ tr:hover td{
   min-width:320px;
 }
 
-.badge{
-  display:inline-block;
-  padding:4px 10px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:700;
-  background:#21262d;
-  color:#58a6ff;
+.table-wrap{
+  overflow:auto;
+  border:1px solid #30363d;
+  border-radius:10px;
 }
 
-.empty-state{
-  padding:50px 20px;
-  text-align:center;
-  color:#8b949e;
-  background:#161b22;
-  border-radius:12px;
-  border:1px dashed #30363d;
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th{
+  background:#21262d;
+  padding:12px;
+  text-align:left;
+  font-size:12px;
+}
+
+td{
+  padding:12px;
+  border-top:1px solid #30363d;
+  font-size:13px;
+}
+
+tr:hover td{
+  background:#1c2128;
+}
+
+.alert-box{
+  border-radius:10px;
+  margin-bottom:12px;
+  overflow:hidden;
+  border:1px solid #30363d;
+}
+
+.alert-head{
+  padding:12px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:700;
+}
+
+.alert-danger{
+  background:rgba(248,81,73,.12);
+}
+
+.alert-warning{
+  background:rgba(210,153,34,.12);
+}
+
+.alert-success{
+  background:rgba(63,185,80,.12);
+}
+
+.alert-body{
+  display:none;
+  background:#0d1117;
+  padding:12px;
 }
 
 .small{
   font-size:12px;
   color:#8b949e;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  background:#21262d;
+  color:#58a6ff;
+  font-size:11px;
+  margin-bottom:8px;
+}
+
+.empty-state{
+  padding:60px 20px;
+  text-align:center;
+  background:#161b22;
+  border:1px dashed #30363d;
+  border-radius:12px;
+  color:#8b949e;
+}
+
+.bank-balances{
+  margin-top:14px;
+}
+
+.balance-row{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid #30363d;
+  font-size:13px;
 }
 
 @media(max-width:768px){
@@ -257,7 +270,7 @@ tr:hover td{
   }
 
   .chart-wrap{
-    height:280px;
+    height:260px;
   }
 }
 </style>
@@ -267,16 +280,32 @@ tr:hover td{
 <body>
 
 <div class="ctrl-bar">
-  <button class="load-btn" id="load-btn" onclick="loadAllRecords()">⬇ Load All Records</button>
+
+<button class="load-btn" id="load-btn" onclick="loadAllRecords()">⬇ Load All Records</button>
+
+  <input type="date" id="start-date">
+  <input type="date" id="end-date">
+
+<button class="run-btn" onclick="applyFilters()">▶ Run Filter</button>
+
   <div class="prog-wrap">
     <div class="prog-bar" id="prog-bar"></div>
   </div>
-  <span class="status-txt" id="status-txt">Press Load to fetch data from Manager</span>
+
+  <span class="status-txt" id="status-txt">
+    Press Load to fetch data
+  </span>
+
 </div>
 
 <div id="app"></div>
 
 <script>
+/* ══════════════════════════════════
+   GLOBAL STORAGE
+══════════════════════════════════ */
+let GLOBAL_DATA = null;
+
 /* ══════════════════════════════════
    postMessage helper — DO NOT MODIFY
 ══════════════════════════════════ */
@@ -300,8 +329,7 @@ function postMessageWithResponse(message) {
 }
 
 /* ══════════════════════════════════
-   getGeneralLedgerTransactionsBatch
-   Fetches ALL pages — DO NOT SIMPLIFY.
+   GL Pagination
 ══════════════════════════════════ */
 async function getGeneralLedgerTransactionsBatch(onProgress) {
   const allItems = [];
@@ -335,14 +363,16 @@ async function getGeneralLedgerTransactionsBatch(onProgress) {
 }
 
 /* ══════════════════════════════════
-   Generic paginated fetch helper
+   Generic Pagination
 ══════════════════════════════════ */
-async function fetchAllPages(endpoint) {
+async function fetchAllPages(endpoint){
+
   const allItems = [];
   let nextToken = null;
-  let guard = 0;
+  let page = 0;
 
   do{
+
     const path = nextToken
       ? endpoint + '?PageSize=99999&next_page_token=' + encodeURIComponent(nextToken)
       : endpoint + '?PageSize=99999';
@@ -353,13 +383,20 @@ async function fetchAllPages(endpoint) {
       path
     });
 
-    const page = Array.isArray(data) ? data : (data.items || data.data || []);
-    allItems.push(...page);
+    const rows = Array.isArray(data)
+      ? data
+      : (data.items || data.data || []);
 
-    nextToken = data.next_page_token || data.nextPageToken || data._links?.next?.href || null;
+    allItems.push(...rows);
 
-    guard++;
-    if(guard > 1000) break;
+    nextToken =
+      data.next_page_token ||
+      data.nextPageToken ||
+      data._links?.next?.href ||
+      null;
+
+    page++;
+    if(page >= 1000) break;
 
   }while(nextToken);
 
@@ -367,80 +404,102 @@ async function fetchAllPages(endpoint) {
 }
 
 /* ══════════════════════════════════
-   Main load function
+   MAIN LOAD
 ══════════════════════════════════ */
-async function loadAllRecords() {
+async function loadAllRecords(){
 
-  const btn    = document.getElementById('load-btn');
-  const bar    = document.getElementById('prog-bar');
+  const btn = document.getElementById('load-btn');
+  const bar = document.getElementById('prog-bar');
   const status = document.getElementById('status-txt');
-  const app    = document.getElementById('app');
 
   btn.disabled = true;
-  btn.textContent = 'Loading…';
-  bar.style.width = '0%';
-  app.innerHTML = '';
+  btn.textContent = 'Loading...';
 
-  try {
-
-    status.textContent = 'Loading General Ledger...';
+  try{
 
     const glItems = await getGeneralLedgerTransactionsBatch((loaded,total,page)=>{
-      status.textContent = total
-        ? `GL Page ${page} · ${loaded.toLocaleString()} / ${total.toLocaleString()}`
-        : `GL Page ${page} · ${loaded.toLocaleString()} records`;
+      status.textContent = `GL Page ${page} · ${loaded.toLocaleString()} loaded`;
     });
 
     bar.style.width = '30%';
 
-    status.textContent = 'Loading Bank Accounts...';
     const bankAccounts = await fetchAllPages('/api4/bank-or-cash-account-batch');
 
     bar.style.width = '55%';
 
-    status.textContent = 'Loading Receipts...';
     const receipts = await fetchAllPages('/api4/receipt-batch');
 
-    bar.style.width = '78%';
+    bar.style.width = '80%';
 
-    status.textContent = 'Loading Payments...';
     const payments = await fetchAllPages('/api4/payment-batch');
 
     bar.style.width = '100%';
 
-    status.textContent = `✓ Loaded ${glItems.length.toLocaleString()} GL · ${receipts.length.toLocaleString()} Receipts · ${payments.length.toLocaleString()} Payments`;
-
-    btn.textContent = '↺ Reload';
-    btn.disabled = false;
-
-    render({
+    GLOBAL_DATA = {
       glItems,
       bankAccounts,
       receipts,
       payments
-    });
+    };
 
-  } catch(err){
+    status.textContent = '✓ Data loaded successfully';
 
-    status.textContent = '⚠ ' + err.message;
-    btn.textContent = '↺ Retry';
     btn.disabled = false;
+    btn.textContent = '↺ Reload';
 
-    app.innerHTML = `
+    setDefaultDates();
+
+    applyFilters();
+
+  }catch(err){
+
+    document.getElementById('app').innerHTML = `
       <div class="err-box">
-        <strong>Extension Error</strong><br><br>
-        ${err.message}<br><br>
-        <small>
-          Ensure this extension is opened inside Manager.io and API4 access is available.
-        </small>
+        <strong>Error:</strong><br><br>
+        ${err.message}
       </div>
     `;
+
+    btn.disabled = false;
+    btn.textContent = '↺ Retry';
   }
 }
 
 /* ══════════════════════════════════
-   Utility helpers
+   DATE HELPERS
 ══════════════════════════════════ */
+function setDefaultDates(){
+
+  const today = new Date();
+  const start = new Date();
+
+  start.setDate(today.getDate()-30);
+
+  document.getElementById('start-date').value =
+    start.toISOString().slice(0,10);
+
+  document.getElementById('end-date').value =
+    today.toISOString().slice(0,10);
+}
+
+function inRange(date,start,end){
+
+  if(!date) return false;
+
+  const d = new Date(date);
+  const s = new Date(start);
+  const e = new Date(end);
+
+  s.setHours(0,0,0,0);
+  e.setHours(23,59,59,999);
+
+  return d >= s && d <= e;
+}
+
+function sumLines(lines){
+  return (lines || []).reduce((a,b)=>a + Number(b?.amount || 0),0);
+}
+
 function fmt(v){
   return '₦' + Number(v || 0).toLocaleString(undefined,{
     minimumFractionDigits:2,
@@ -448,218 +507,379 @@ function fmt(v){
   });
 }
 
-function fmtDate(d){
-  if(!d) return '-';
-  return new Date(d).toLocaleDateString(undefined,{
-    year:'numeric',
-    month:'short',
-    day:'numeric'
-  });
-}
-
-function sumLines(lines){
-  return (lines || []).reduce((a,b)=>a + Number(b?.amount || 0),0);
+function fmtDate(v){
+  if(!v) return '-';
+  return new Date(v).toLocaleDateString();
 }
 
 /* ══════════════════════════════════
-   Dashboard render
+   APPLY FILTERS
+══════════════════════════════════ */
+function applyFilters(){
+
+  if(!GLOBAL_DATA) return;
+
+  const start = document.getElementById('start-date').value;
+  const end = document.getElementById('end-date').value;
+
+  const receipts = GLOBAL_DATA.receipts.filter(r=>
+    inRange(r?.item?.date,start,end)
+  );
+
+  const payments = GLOBAL_DATA.payments.filter(p=>
+    inRange(p?.item?.date,start,end)
+  );
+
+  render({
+    receipts,
+    payments,
+    bankAccounts:GLOBAL_DATA.bankAccounts
+  });
+}
+
+/* ══════════════════════════════════
+   RENDER
 ══════════════════════════════════ */
 function render(data){
 
   const app = document.getElementById('app');
 
-  const glItems = data?.glItems || [];
-  const bankAccounts = data?.bankAccounts || [];
-  const receipts = data?.receipts || [];
-  const payments = data?.payments || [];
+  const receipts = data.receipts || [];
+  const payments = data.payments || [];
+  const bankAccounts = data.bankAccounts || [];
 
-  if(
-    !glItems.length &&
-    !receipts.length &&
-    !payments.length
-  ){
+  if(!receipts.length && !payments.length){
+
     app.innerHTML = `
       <div class="empty-state">
-        <h2>No Data Found</h2>
+        <h2>No Transactions Found</h2>
         <br>
-        <p>No records were returned from Manager.io.</p>
+        <p>No transactions exist within selected dates.</p>
       </div>
     `;
+
     return;
   }
 
-  /* ============================
-     CASH ANALYSIS
-  ============================ */
+  /* =========================
+     TOTALS
+  ========================= */
 
-  const totalReceipts = receipts.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
-  const totalPayments = payments.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+  const totalInflow =
+    receipts.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
 
-  const netCash = totalReceipts - totalPayments;
+  const totalOutflow =
+    payments.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
 
-  const todayStr = new Date().toISOString().slice(0,10);
+  /* =========================
+     BANK BALANCES
+  ========================= */
 
-  const dailyInflow = receipts
-    .filter(r => (r?.item?.date || '').slice(0,10) === todayStr)
-    .reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+  const accountBalances = {};
 
-  const dailyOutflow = payments
-    .filter(r => (r?.item?.date || '').slice(0,10) === todayStr)
-    .reduce((a,b)=>a + sumLines(b?.item?.lines),0);
+  bankAccounts.forEach(a=>{
+    accountBalances[a.key] = {
+      name:a?.item?.name || 'Unknown',
+      balance:0
+    };
+  });
 
-  /* ============================
-     PAYMENT CATEGORIES
-  ============================ */
+  receipts.forEach(r=>{
+    const acc = r?.item?.receivedIn;
+    const amt = sumLines(r?.item?.lines);
 
-  let customerPayments = 0;
+    if(accountBalances[acc]){
+      accountBalances[acc].balance += amt;
+    }
+  });
+
+  payments.forEach(p=>{
+    const acc = p?.item?.paidFrom;
+    const amt = sumLines(p?.item?.lines);
+
+    if(accountBalances[acc]){
+      accountBalances[acc].balance -= amt;
+    }
+  });
+
+  const totalBankBalance =
+    Object.values(accountBalances)
+      .reduce((a,b)=>a + b.balance,0);
+
+  /* =========================
+     PAYMENT ANALYSIS
+  ========================= */
+
   let supplierPayments = 0;
   let expensePayments = 0;
   let loanPayments = 0;
 
   payments.forEach(p=>{
+
     const amt = sumLines(p?.item?.lines);
 
     if(p?.item?.supplier){
       supplierPayments += amt;
-    }else if(
-      (p?.item?.description || '').toLowerCase().includes('loan')
+    }
+    else if(
+      (p?.item?.description || '')
+        .toLowerCase()
+        .includes('loan')
     ){
       loanPayments += amt;
-    }else{
+    }
+    else{
       expensePayments += amt;
     }
   });
 
-  receipts.forEach(r=>{
-    customerPayments += sumLines(r?.item?.lines);
+  /* =========================
+     EXPENSE ANALYSIS
+  ========================= */
+
+  const expenseBreakdown = {};
+
+  payments.forEach(p=>{
+
+    const key =
+      p?.item?.description ||
+      'Uncategorized';
+
+    const amt = sumLines(p?.item?.lines);
+
+    expenseBreakdown[key] =
+      (expenseBreakdown[key] || 0) + amt;
   });
 
-  /* ============================
-     BANK RECONCILIATION
-  ============================ */
-
-  const unreconciledReceipts = receipts.filter(r=>Number(r?.item?.cleared || 0) === 0);
-  const unreconciledPayments = payments.filter(p=>Number(p?.item?.cleared || 0) === 0);
-
-  const unreconciledTotal =
-    unreconciledReceipts.reduce((a,b)=>a + sumLines(b?.item?.lines),0) +
-    unreconciledPayments.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
-
-  const outstandingCheques = unreconciledPayments.reduce((a,b)=>a + sumLines(b?.item?.lines),0);
-
-  /* ============================
-     ALERTS
-  ============================ */
+  /* =========================
+     ALERTS WITH DRILLDOWN
+  ========================= */
 
   const alerts = [];
 
-  if(netCash < 0){
+  const unusualThreshold =
+    payments.length
+      ? totalOutflow / payments.length * 3
+      : 0;
+
+  const unusualPayments = payments.filter(p=>
+    sumLines(p?.item?.lines) > unusualThreshold &&
+    unusualThreshold > 0
+  );
+
+  if(totalBankBalance < 0){
+
     alerts.push({
       type:'danger',
-      text:'Negative cash position detected. Total outflows exceed inflows.'
+      title:'Negative Cash Position',
+      rows:Object.values(accountBalances)
+        .filter(a=>a.balance < 0)
+        .map(a=>({
+          date:'-',
+          ref:'-',
+          desc:a.name,
+          amount:a.balance
+        }))
     });
   }
 
-  if(unreconciledTotal > 0){
+  if(unusualPayments.length){
+
     alerts.push({
       type:'warning',
-      text:`There are ${unreconciledPayments.length + unreconciledReceipts.length} unreconciled bank transactions.`
+      title:'Unusual Transactions',
+      rows:unusualPayments.map(p=>({
+        date:p?.item?.date,
+        ref:p?.item?.reference,
+        desc:p?.item?.description,
+        amount:sumLines(p?.item?.lines)
+      }))
     });
   }
 
-  const unusualThreshold = payments.length
-    ? totalPayments / payments.length * 3
-    : 0;
+  const unreconciled =
+    payments.filter(p=>Number(p?.item?.cleared || 0) === 0);
 
-  const unusualTransactions = payments.filter(p=>{
-    return sumLines(p?.item?.lines) > unusualThreshold && unusualThreshold > 0;
-  });
+  if(unreconciled.length){
 
-  if(unusualTransactions.length){
     alerts.push({
       type:'warning',
-      text:`${unusualTransactions.length} unusual high-value payment transactions detected.`
+      title:'Unreconciled Bank Items',
+      rows:unreconciled.map(p=>({
+        date:p?.item?.date,
+        ref:p?.item?.reference,
+        desc:p?.item?.description,
+        amount:sumLines(p?.item?.lines)
+      }))
     });
   }
 
   if(!alerts.length){
+
     alerts.push({
       type:'success',
-      text:'No major financial alerts detected.'
+      title:'No Financial Alerts',
+      rows:[]
     });
   }
 
-  /* ============================
+  /* =========================
      CASHFLOW TREND
-  ============================ */
+  ========================= */
 
-  const cashflowMap = {};
+  const trendMap = {};
 
   receipts.forEach(r=>{
+
     const d = (r?.item?.date || '').slice(0,10);
-    if(!cashflowMap[d]){
-      cashflowMap[d] = {in:0,out:0};
+
+    if(!trendMap[d]){
+      trendMap[d] = {in:0,out:0};
     }
-    cashflowMap[d].in += sumLines(r?.item?.lines);
+
+    trendMap[d].in += sumLines(r?.item?.lines);
   });
 
   payments.forEach(p=>{
+
     const d = (p?.item?.date || '').slice(0,10);
-    if(!cashflowMap[d]){
-      cashflowMap[d] = {in:0,out:0};
+
+    if(!trendMap[d]){
+      trendMap[d] = {in:0,out:0};
     }
-    cashflowMap[d].out += sumLines(p?.item?.lines);
+
+    trendMap[d].out += sumLines(p?.item?.lines);
   });
 
-  const trendLabels = Object.keys(cashflowMap).sort();
-
-  const inflowSeries = trendLabels.map(d=>cashflowMap[d].in);
-  const outflowSeries = trendLabels.map(d=>cashflowMap[d].out);
-
-  /* ============================
-     HTML
-  ============================ */
+  const trendLabels = Object.keys(trendMap).sort();
 
   app.innerHTML = `
 
     <div class="grid kpi-grid">
 
       <div class="card">
-        <div class="card-title">Daily Cash Inflow</div>
-        <div class="kpi-value positive">${fmt(dailyInflow)}</div>
-        <div class="kpi-sub">Today's customer receipts</div>
+        <div class="card-title">Cash Inflow</div>
+        <div class="kpi-value positive">
+          ${fmt(totalInflow)}
+        </div>
       </div>
 
       <div class="card">
-        <div class="card-title">Daily Cash Outflow</div>
-        <div class="kpi-value negative">${fmt(dailyOutflow)}</div>
-        <div class="kpi-sub">Today's payment transactions</div>
+        <div class="card-title">Cash Outflow</div>
+        <div class="kpi-value negative">
+          ${fmt(totalOutflow)}
+        </div>
       </div>
 
       <div class="card">
-        <div class="card-title">Net Cash Position</div>
-        <div class="kpi-value ${netCash >=0 ? 'positive':'negative'}">${fmt(netCash)}</div>
-        <div class="kpi-sub">Receipts minus payments</div>
+
+        <div class="card-title">
+          Net Cash Position
+        </div>
+
+        <div class="kpi-value ${totalBankBalance >= 0 ? 'positive':'negative'}">
+          ${fmt(totalBankBalance)}
+        </div>
+
+        <div class="bank-balances">
+
+          <select id="account-select" onchange="showAccountBalance()">
+
+            <option value="">Select Bank/Cash Account</option>
+
+            ${
+              Object.entries(accountBalances)
+                .map(([k,v])=>`
+                  <option value="${k}">
+                    ${v.name}
+                  </option>
+                `).join('')
+            }
+
+          </select>
+
+          <div id="selected-balance" class="small" style="margin-top:10px">
+            Select account to view balance
+          </div>
+
+        </div>
+
       </div>
 
       <div class="card">
         <div class="card-title">Bank & Cash Accounts</div>
-        <div class="kpi-value">${bankAccounts.length.toLocaleString()}</div>
-        <div class="kpi-sub">Detected accounts</div>
+        <div class="kpi-value">
+          ${bankAccounts.length.toLocaleString()}
+        </div>
       </div>
 
     </div>
 
     <div class="card" style="margin-bottom:20px">
-      <div class="section-title">Financial Alerts</div>
+
+      <div class="section-title">
+        Financial Alerts
+      </div>
 
       ${
-        alerts.map(a=>`
-          <div class="alert-box alert-${a.type}">
-            ${a.text}
+        alerts.map((a,i)=>`
+
+          <div class="alert-box">
+
+            <div class="alert-head alert-${a.type}"
+                 onclick="toggleAlert(${i})">
+
+              <span>${a.title}</span>
+              <span>▼</span>
+
+            </div>
+
+            <div class="alert-body" id="alert-body-${i}">
+
+              ${
+                a.rows.length
+                  ? `
+                    <div class="table-wrap">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Reference</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          ${
+                            a.rows.map(r=>`
+                              <tr>
+                                <td>${fmtDate(r.date)}</td>
+                                <td>${r.ref || '-'}</td>
+                                <td>${r.desc || '-'}</td>
+                                <td>${fmt(r.amount)}</td>
+                              </tr>
+                            `).join('')
+                          }
+
+                        </tbody>
+                      </table>
+                    </div>
+                  `
+                  : `
+                    <div class="small">
+                      No issues found.
+                    </div>
+                  `
+              }
+
+            </div>
+
           </div>
+
         `).join('')
       }
+
     </div>
 
     <div class="chart-grid">
@@ -690,200 +910,107 @@ function render(data){
     <div class="flex">
 
       <div class="card flex-1">
-        <div class="section-title">Bank Reconciliation Summary</div>
 
-        <div class="grid kpi-grid">
+        <div class="section-title">
+          Expenses Analysis
+        </div>
 
-          <div>
-            <div class="small">Unreconciled Transactions</div>
-            <div class="kpi-value warning">
-              ${(unreconciledReceipts.length + unreconciledPayments.length).toLocaleString()}
-            </div>
-          </div>
+        <div class="table-wrap">
 
-          <div>
-            <div class="small">Outstanding Cheques</div>
-            <div class="kpi-value negative">
-              ${fmt(outstandingCheques)}
-            </div>
-          </div>
+          <table>
 
-          <div>
-            <div class="small">Unreconciled Amount</div>
-            <div class="kpi-value warning">
-              ${fmt(unreconciledTotal)}
-            </div>
-          </div>
+            <thead>
+              <tr>
+                <th>Expense Type</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              ${
+                Object.entries(expenseBreakdown)
+                  .sort((a,b)=>b[1]-a[1])
+                  .slice(0,20)
+                  .map(([k,v])=>`
+                    <tr>
+                      <td>${k}</td>
+                      <td>${fmt(v)}</td>
+                    </tr>
+                  `).join('')
+              }
+
+            </tbody>
+
+          </table>
 
         </div>
+
       </div>
 
       <div class="card flex-1">
-        <div class="section-title">Payment Analysis</div>
 
-        <div style="display:grid;gap:12px">
+        <div class="section-title">
+          Payment Analysis
+        </div>
 
-          <div>
-            <div class="badge">Customer Payments</div>
-            <div style="margin-top:8px;font-size:24px;font-weight:700" class="positive">
-              ${fmt(customerPayments)}
-            </div>
-          </div>
+        <div style="display:grid;gap:16px">
 
           <div>
             <div class="badge">Supplier Payments</div>
-            <div style="margin-top:8px;font-size:24px;font-weight:700" class="negative">
+            <div class="kpi-value negative">
               ${fmt(supplierPayments)}
             </div>
           </div>
 
           <div>
             <div class="badge">Loan Payments</div>
-            <div style="margin-top:8px;font-size:24px;font-weight:700">
+            <div class="kpi-value warning">
               ${fmt(loanPayments)}
             </div>
           </div>
 
           <div>
             <div class="badge">Expense Payments</div>
-            <div style="margin-top:8px;font-size:24px;font-weight:700">
+            <div class="kpi-value">
               ${fmt(expensePayments)}
             </div>
           </div>
 
         </div>
+
       </div>
 
     </div>
 
-    <div class="card" style="margin-top:20px">
-      <div class="section-title">Recent Unreconciled Transactions</div>
-
-      <div class="table-wrap">
-        <table>
-
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Type</th>
-              <th>Reference</th>
-              <th>Description</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            ${
-              [
-                ...unreconciledReceipts.map(r=>({
-                  type:'Receipt',
-                  date:r?.item?.date,
-                  reference:r?.item?.reference,
-                  description:r?.item?.description,
-                  amount:sumLines(r?.item?.lines)
-                })),
-                ...unreconciledPayments.map(r=>({
-                  type:'Payment',
-                  date:r?.item?.date,
-                  reference:r?.item?.reference,
-                  description:r?.item?.description,
-                  amount:sumLines(r?.item?.lines)
-                }))
-              ]
-              .sort((a,b)=>new Date(b.date)-new Date(a.date))
-              .slice(0,25)
-              .map(t=>`
-                <tr>
-                  <td>${fmtDate(t.date)}</td>
-                  <td>${t.type}</td>
-                  <td>${t.reference || '-'}</td>
-                  <td>${t.description || '-'}</td>
-                  <td>${fmt(t.amount)}</td>
-                </tr>
-              `).join('')
-            }
-
-          </tbody>
-
-        </table>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:20px">
-      <div class="section-title">Bank & Cash Accounts</div>
-
-      <div class="table-wrap">
-        <table>
-
-          <thead>
-            <tr>
-              <th>Account Name</th>
-              <th>Type</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            ${
-              bankAccounts.map(a=>`
-                <tr>
-                  <td>${a?.item?.name || '-'}</td>
-                  <td>
-                    ${
-                      a?.item?.isBankAccount
-                        ? 'Bank Account'
-                        : a?.item?.isCashAccount
-                          ? 'Cash Account'
-                          : 'Other'
-                    }
-                  </td>
-                  <td>
-                    ${
-                      a?.item?.inactive
-                        ? '<span class="negative">Inactive</span>'
-                        : '<span class="positive">Active</span>'
-                    }
-                  </td>
-                </tr>
-              `).join('')
-            }
-
-          </tbody>
-
-        </table>
-      </div>
-    </div>
   `;
 
-  /* ============================
-     CHARTS
-  ============================ */
+  /* =========================
+     CASHFLOW CHART
+  ========================= */
 
-  const cashflowCtx = document.getElementById('cashflowChart');
-
-  if(cashflowCtx){
-    new Chart(cashflowCtx,{
+  new Chart(
+    document.getElementById('cashflowChart'),
+    {
       type:'line',
       data:{
         labels:trendLabels,
         datasets:[
           {
-            label:'Cash Inflow',
-            data:inflowSeries,
+            label:'Inflow',
+            data:trendLabels.map(d=>trendMap[d].in),
             borderColor:'#3fb950',
-            backgroundColor:'rgba(63,185,80,.15)',
-            tension:.35,
-            fill:true
+            backgroundColor:'rgba(63,185,80,.1)',
+            fill:true,
+            tension:.3
           },
           {
-            label:'Cash Outflow',
-            data:outflowSeries,
+            label:'Outflow',
+            data:trendLabels.map(d=>trendMap[d].out),
             borderColor:'#f85149',
-            backgroundColor:'rgba(248,81,73,.15)',
-            tension:.35,
-            fill:true
+            backgroundColor:'rgba(248,81,73,.1)',
+            fill:true,
+            tension:.3
           }
         ]
       },
@@ -892,9 +1019,7 @@ function render(data){
         maintainAspectRatio:false,
         plugins:{
           legend:{
-            labels:{
-              color:'#e6edf3'
-            }
+            labels:{ color:'#e6edf3' }
           }
         },
         scales:{
@@ -908,13 +1033,16 @@ function render(data){
           }
         }
       }
-    });
-  }
+    }
+  );
 
-  const paymentCtx = document.getElementById('paymentChart');
+  /* =========================
+     PAYMENT CHART
+  ========================= */
 
-  if(paymentCtx){
-    new Chart(paymentCtx,{
+  new Chart(
+    document.getElementById('paymentChart'),
+    {
       type:'doughnut',
       data:{
         labels:[
@@ -940,41 +1068,32 @@ function render(data){
         maintainAspectRatio:false,
         plugins:{
           legend:{
-            labels:{
-              color:'#e6edf3'
-            }
+            labels:{ color:'#e6edf3' }
           }
         }
       }
-    });
-  }
+    }
+  );
 
-  const expenseCtx = document.getElementById('expenseChart');
+  /* =========================
+     EXPENSE CHART
+  ========================= */
 
-  if(expenseCtx){
-    new Chart(expenseCtx,{
+  const expenseEntries =
+    Object.entries(expenseBreakdown)
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,8);
+
+  new Chart(
+    document.getElementById('expenseChart'),
+    {
       type:'bar',
       data:{
-        labels:[
-          'Customer Receipts',
-          'Supplier Payments',
-          'Expense Payments',
-          'Loan Payments'
-        ],
+        labels:expenseEntries.map(x=>x[0]),
         datasets:[{
-          label:'Amount',
-          data:[
-            customerPayments,
-            supplierPayments,
-            expensePayments,
-            loanPayments
-          ],
-          backgroundColor:[
-            '#3fb950',
-            '#f85149',
-            '#d29922',
-            '#58a6ff'
-          ]
+          label:'Expenses',
+          data:expenseEntries.map(x=>x[1]),
+          backgroundColor:'#1f6feb'
         }]
       },
       options:{
@@ -982,9 +1101,7 @@ function render(data){
         maintainAspectRatio:false,
         plugins:{
           legend:{
-            labels:{
-              color:'#e6edf3'
-            }
+            labels:{ color:'#e6edf3' }
           }
         },
         scales:{
@@ -998,8 +1115,58 @@ function render(data){
           }
         }
       }
-    });
+    }
+  );
+
+  /* =========================
+     ACCOUNT BALANCE VIEWER
+  ========================= */
+
+  window.ACCOUNT_BALANCES = accountBalances;
+}
+
+/* ══════════════════════════════════
+   ACCOUNT BALANCE DISPLAY
+══════════════════════════════════ */
+function showAccountBalance(){
+
+  const key =
+    document.getElementById('account-select').value;
+
+  const div =
+    document.getElementById('selected-balance');
+
+  if(!key){
+
+    div.innerHTML =
+      'Select account to view balance';
+
+    return;
   }
+
+  const acc = window.ACCOUNT_BALANCES[key];
+
+  div.innerHTML = `
+    <strong>${acc.name}</strong><br>
+    Balance:
+    <span class="${acc.balance >=0 ? 'positive':'negative'}">
+      ${fmt(acc.balance)}
+    </span>
+  `;
+}
+
+/* ══════════════════════════════════
+   ALERT TOGGLE
+══════════════════════════════════ */
+function toggleAlert(i){
+
+  const el =
+    document.getElementById('alert-body-' + i);
+
+  el.style.display =
+    el.style.display === 'block'
+      ? 'none'
+      : 'block';
 }
 </script>
 
